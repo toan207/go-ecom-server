@@ -1,0 +1,16 @@
+server:
+  port: 8000
+databases:
+  - user: admin
+    password: Toan207@207
+    host: localhost
+    port: 5432
+    name: ecommerce
+  - user: admin
+    password: Toan207@207
+    host: localhost
+    port: 5433
+    name: order
+security:
+  jwt: 
+    key: 1234567890
