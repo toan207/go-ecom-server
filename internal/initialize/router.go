@@ -1,18 +1,34 @@
 package initialize
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"pawtopia.com/global"
+	"pawtopia.com/internal/routers"
 )
 
 func InitRouter() *gin.Engine {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
+	var r *gin.Engine
+	if global.Config.Server.Mode == "dev" {
+		gin.SetMode(gin.DebugMode)
+		gin.ForceConsoleColor()
+		r = gin.Default()
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+		r = gin.New()
+	}
 
+	adminRouter := routers.RouterGroupApp.Admin
+	userRouter := routers.RouterGroupApp.User
+
+	MainGroup := r.Group("/api/v1")
+	{
+		MainGroup.GET("/health")
+	}
+	{
+		userRouter.InitUserRouter(MainGroup)
+	}
+	{
+		adminRouter.InitUserRouter(MainGroup)
+	}
 	return r
 }
