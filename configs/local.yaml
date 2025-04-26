@@ -2,11 +2,11 @@ server:
   port: 8000
 
 mysql:
-  user: admin
-  password: Toan207@207
+  user: root
+  password: 123456
   host: localhost
   port: 3306
-  dbname: ecommerce
+  dbname: mydb
   maxIdleConns: 10
   maxOpenConns: 100
   connMaxLifetime: 3600

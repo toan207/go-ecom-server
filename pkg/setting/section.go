@@ -13,7 +13,7 @@ type MySQLSetting struct {
 	Port            int    `mapstructure:"port"`
 	User            string `mapstructure:"user"`
 	Password        string `mapstructure:"password"`
-	Name            string `mapstructure:"name"`
+	Name            string `mapstructure:"dbname"`
 	MaxIdleConns    int    `mapstructure:"maxIdleConns"`
 	MaxOpenConns    int    `mapstructure:"maxOpenConns"`
 	ConnMaxLifetime int    `mapstructure:"connMaxLifetime"`
