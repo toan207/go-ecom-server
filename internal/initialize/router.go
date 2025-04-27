@@ -22,7 +22,9 @@ func InitRouter() *gin.Engine {
 
 	MainGroup := r.Group("/api/v1")
 	{
-		MainGroup.GET("/health")
+		MainGroup.GET("/health", func(c *gin.Context) {
+			c.JSON(200, gin.H{"status": "ok"})
+		})
 	}
 	{
 		userRouter.InitUserRouter(MainGroup)

@@ -14,7 +14,7 @@ services:
       - "3306:3306"
     volumes:
       - ~/docker/mysql_data:/var/lib/mysql
-  
+
   redis:
     image: redis:7.2-alpine
     container_name: redis-6381
@@ -23,7 +23,7 @@ services:
     restart: always
     volumes:
       - ~/docker/redis_data:/data
-    command: ["redis-server", "--appendonly", "yes"]
+    command: [ "redis-server", "--appendonly", "yes" ]
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.2
@@ -50,20 +50,34 @@ services:
     image: provectuslabs/kafka-ui:latest
     container_name: kafka-ui
     ports:
-      - "8080:8080" 
+      - "8080:8080"
     environment:
       KAFKA_CLUSTERS_0_NAME: kafka-cluster
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092  # use docker network
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092 # use docker network
     depends_on:
       - kafka
     networks:
       - kafka-net
+
+  ecom.pawtopia.vn:
+    container_name: go_backend_ecom
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+      - kafka
+    ports:
+      - "8002:8000"
 
 volumes:
   mysql_data:
     driver: local
   kafka-data:
   redis_data:
+
 
 networks:
   kafka-net:

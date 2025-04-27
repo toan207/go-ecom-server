@@ -45,7 +45,7 @@ func SetPool() {
 	global.Logger.Info("MySQL connection pool settings applied")
 
 	// migrate()
-	genTableDAO()
+	// genTableDAO()
 }
 
 func migrate() {

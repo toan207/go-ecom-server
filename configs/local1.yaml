@@ -5,7 +5,7 @@ server:
 mysql:
   user: root
   password: 123456
-  host: mysql-container
+  host: localhost
   port: 3306
   dbname: mydb
   maxIdleConns: 10
@@ -21,7 +21,7 @@ log:
   compress: true
 
 redis:
-  host: redis-6381
-  port: 6379
+  host: 127.0.0.1
+  port: 6381
   password:
   db: 0
