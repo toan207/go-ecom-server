@@ -6,6 +6,7 @@ import (
 
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
+	"gorm.io/gen"
 	"gorm.io/gorm"
 	"pawtopia.com/global"
 	"pawtopia.com/internal/po"
@@ -43,7 +44,8 @@ func SetPool() {
 	sqlDB.SetConnMaxLifetime(time.Duration(mysqlSetting.ConnMaxLifetime) * time.Second)
 	global.Logger.Info("MySQL connection pool settings applied")
 
-	migrate()
+	// migrate()
+	genTableDAO()
 }
 
 func migrate() {
@@ -55,4 +57,15 @@ func migrate() {
 	checkErrorPanic(err, "Failed to migrate database")
 
 	global.Logger.Info("Database migration completed")
+}
+
+func genTableDAO() {
+	g := gen.NewGenerator(gen.Config{
+		OutPath: "./internal/model",
+		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
+	})
+
+	g.UseDB(global.MySQL)
+	g.GenerateAllTable()
+	g.Execute()
 }
