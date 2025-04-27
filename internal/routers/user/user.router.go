@@ -1,13 +1,18 @@
 package user
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"pawtopia.com/internal/wire"
+)
 
 type UserRouter struct{}
 
 func (u *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
+	userController, _ := wire.InitUserRouterHandler()
+
 	userRouterPublic := Router.Group("user")
 	{
-		userRouterPublic.GET("/register")
+		userRouterPublic.GET("/register", userController.Register)
 		userRouterPublic.GET("/login")
 		userRouterPublic.GET("/otp")
 	}
