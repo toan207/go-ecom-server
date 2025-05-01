@@ -1,8 +1,11 @@
 package controller
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"pawtopia.com/internal/service"
+	"pawtopia.com/internal/vo"
 	"pawtopia.com/pkg/response"
 )
 
@@ -17,12 +20,17 @@ func NewUserController(userService service.IUserService) *UserController {
 }
 
 func (uc *UserController) Register(c *gin.Context) {
-	email := c.PostForm("email")
-	purpose := c.PostForm("purpose")
-	result := uc.userService.Register(email, purpose)
+	var params vo.UserRegistratorRequest
+	if err := c.ShouldBindJSON(&params); err != nil {
+		fmt.Printf("Error binding JSON: %v\n", err)
+		response.ErrorResponse(c, response.ErrorCodeInvalidParams)
+		return
+	}
 
-	if result == response.ErrorCodeEmailExist {
-		response.ErrorResponse(c, response.ErrorCodeEmailExist)
+	result := uc.userService.Register(params.Email, params.Purpose)
+
+	if result != response.ErrorCodeSuccess {
+		response.ErrorResponse(c, result)
 		return
 	}
 

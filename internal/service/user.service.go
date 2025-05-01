@@ -7,6 +7,7 @@ import (
 	"pawtopia.com/global"
 	"pawtopia.com/internal/repo"
 	"pawtopia.com/internal/ultils/crypto"
+	"pawtopia.com/internal/ultils/mail"
 	"pawtopia.com/internal/ultils/random"
 	"pawtopia.com/pkg/response"
 )
@@ -38,6 +39,7 @@ func (us *userService) Register(email string, purpose string) int {
 	fmt.Printf("Hash email: %s\n", hashEmail)
 
 	if us.userRepo.GetUserByEmail(email) {
+		global.Logger.Error("Email already exists")
 		return response.ErrorCodeEmailExist
 	}
 
@@ -46,6 +48,11 @@ func (us *userService) Register(email string, purpose string) int {
 	if redisOTPErr != nil {
 		global.Logger.Error(fmt.Sprintf("Redis error: %v", redisOTPErr))
 		return response.ErrorCodeOTPError
+	}
+
+	err := mail.SendTextEmail([]string{email}, otp)
+	if err != nil {
+		return response.ErrorCodeSendOTPErr
 	}
 	return response.ErrorCodeSuccess
 }
