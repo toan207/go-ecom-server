@@ -1,5 +1,18 @@
 APP_NAME = server
 
+dev:
+	ENV=dev go run ./cmd/$(APP_NAME)
+
 run:
-	@echo "Running $(APP_NAME)..."
-	@go run ./cmd/$(APP_NAME)
+	docker compose up -d && go run ./cmd/$(APP_NAME)
+
+kill:
+	docker compose kill
+
+up:
+	docker compose up -d
+
+down:	
+	docker compose down
+
+.PHONY: run

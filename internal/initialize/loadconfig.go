@@ -2,6 +2,7 @@ package initialize
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/viper"
 	"pawtopia.com/global"
@@ -12,6 +13,11 @@ func LoadConfig() {
 	viper.AddConfigPath("./configs/")
 	viper.SetConfigName("local")
 	viper.SetConfigType("yaml")
+
+	env := os.Getenv("ENV")
+	if env == "dev" {
+		viper.SetConfigName("dev")
+	}
 
 	err := viper.ReadInConfig()
 	if err != nil {

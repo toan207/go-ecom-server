@@ -12,7 +12,7 @@ func (u *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 
 	userRouterPublic := Router.Group("user")
 	{
-		userRouterPublic.GET("/register", userController.Register)
+		userRouterPublic.POST("/register", userController.Register)
 		userRouterPublic.GET("/login")
 		userRouterPublic.GET("/otp")
 	}
