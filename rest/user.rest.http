@@ -7,3 +7,5 @@ Content-Type: application/json
   "email": "buiductoan207@gmail.com",
   "purpose": "test"
 }
+
+GET {{baseUrl}}/health
