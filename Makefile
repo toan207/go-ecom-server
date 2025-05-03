@@ -1,3 +1,7 @@
+GOOSE_DBSTRING = "root:123456@tcp(127.0.0.1:3306)/mydb"
+GOOSE_MIGRATION_DIR ?= sql/schema
+GOOSE_DRIVER = mysql
+
 APP_NAME = server
 
 dev:
@@ -15,4 +19,13 @@ up:
 down:	
 	docker compose down
 
-.PHONY: run
+upg: 
+	@GOOSE_DRIVER=$(GOOSE_DRIVER) GOOSE_DBSTRING=$(GOOSE_DBSTRING) goose -dir=$(GOOSE_MIGRATION_DIR) up
+
+downg: 
+	@GOOSE_DRIVER=$(GOOSE_DRIVER) GOOSE_DBSTRING=$(GOOSE_DBSTRING) goose -dir=$(GOOSE_MIGRATION_DIR) down
+
+resetg: 
+	@GOOSE_DRIVER=$(GOOSE_DRIVER) GOOSE_DBSTRING=$(GOOSE_DBSTRING) goose -dir=$(GOOSE_MIGRATION_DIR) reset
+
+.PHONY: run upg downg resetg dev
