@@ -1,8 +1,8 @@
 version: "2"
 sql:
   - engine: mysql
-    schema: "sql/schema.sql"
-    queries: "sql/queries.sql"
+    schema: "sql/schema"
+    queries: "sql/queries"
     gen:
       go: 
         out: "internal/databse"
